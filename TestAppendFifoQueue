@@ -1,0 +1,64 @@
+package testqueue;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import queue.FifoQueue;
+
+public class TestAppendFifoQueue {
+	private FifoQueue<Integer> myIntQueue;
+	private FifoQueue<Integer> myNewQueue;
+	
+	@Before
+	public void setUp() throws Exception {
+		myIntQueue = new FifoQueue<Integer>();
+		myNewQueue = new FifoQueue<Integer>();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		myIntQueue = null;
+		myNewQueue = null;
+	}
+
+	@Test
+	public final void testAppendBothEmpty() {
+		FifoQueue<Integer> a = myIntQueue;
+		myIntQueue.append(myNewQueue);
+		assertEquals("Both empty and fails", a, myIntQueue);
+	}
+	
+	@Test
+	public final void testAppendOldToNewEmpty() {
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		FifoQueue<Integer> a = myIntQueue;
+		myIntQueue.append(myNewQueue);
+		assertEquals("AppendOldToNewEmpty", a, myIntQueue);
+	}
+	
+	@Test
+	public final void testAppendEmptyOldtoNew() {
+		myNewQueue.offer(1);
+		myNewQueue.offer(2);
+		FifoQueue<Integer> a = myNewQueue;
+		myIntQueue.append(myNewQueue);
+		assertEquals("AppendEmptyOldtoNew", a, myNewQueue);
+	}
+	
+	@Test
+	public final void testAppendBothQuesFilled() {
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		myNewQueue.offer(3);
+		myNewQueue.offer(4);
+		FifoQueue<Integer> a = myIntQueue;
+		a.offer(3);
+		a.offer(4);
+		myIntQueue.append(myNewQueue);
+		assertEquals("AppendBothQuesFilled", a, myIntQueue);
+	}
+}
